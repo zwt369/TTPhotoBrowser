@@ -29,8 +29,7 @@ Pod::Spec.new do |s|
   # s.libraries = "iconv", "xml2"
 
   s.requires_arc = true
-
- s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/SDWebImage" }
- s.dependency "SDWebImage"
+  s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/SDWebImage" }
+  s.dependency "SDWebImage"
 
 end
