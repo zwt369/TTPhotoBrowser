@@ -1,7 +1,7 @@
 
 
 Pod::Spec.new do |s|
-  s.name         = "TTPhotoBrowser.podspec"
+  s.name         = "TTPhotoBrowser"
   s.version      = "0.0.1"
   s.summary      = "一款仿微信的轻量级图片浏览器"
 
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/zwt369/TTPhotoBrowser.git", :tag => "0.0.1" }
 
-  s.source_files  = "TTPhotoBrowser/TTPhotoBrowser/Classes/**/**/*.{h,m}"
+  s.source_files  = "TTPhotoBrowser/TTPhotoBrowser/Classess/**/**/*.{h,m}"
  # s.exclude_files = "Classes/Exclude"
  # s.public_header_files = "Classes/**/*.h"
 
