@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <UIImageView+WebCache.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 #ifndef ScreenWidth
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
