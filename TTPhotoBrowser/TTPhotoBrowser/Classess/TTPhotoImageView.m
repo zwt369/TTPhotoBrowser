@@ -2,7 +2,7 @@
 //  TTPhotoImageView.m
 //  TTPhotoBrowser
 //
-//  Created by 壹号美 on 2018/9/30.
+
 //  Copyright © 2018年 TTPhotoBrowser. All rights reserved.
 //
 
@@ -22,26 +22,7 @@
 
 @implementation TTPhotoImageView
 
-- (UIImageView *)imageView{
-    if (!_imageView) {
-        _imageView = [[UIImageView alloc] init];
-        [_imageView setUserInteractionEnabled:YES];
-        [_imageView setFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-    }
-    return _imageView;
-}
-    
-- (UIScrollView *)scrollView{
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] init];
-        [_scrollView setFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-        [_scrollView addSubview:self.imageView];
-        [_scrollView setDelegate:self];
-        [_scrollView setClipsToBounds:YES];
-    }
-    return _scrollView;
-}
-    
+
 - (UILabel *)reloadLabel{
     if (!_reloadLabel) {
         _reloadLabel = [[UILabel alloc] init];
@@ -64,13 +45,20 @@
     
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        [self addSubview:self.scrollView];
-        [self initDefaultData];
+        [self setUpUI];
     }
     return self;
 }
-    
-- (void)initDefaultData{
+ 
+-(void)setUpUI{
+    self.scrollView = [[UIScrollView alloc] init];
+    [self.scrollView setFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    [self.scrollView setDelegate:self];
+    [self.scrollView setClipsToBounds:YES];
+    [self addSubview:self.scrollView];
+    self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    [self.imageView setUserInteractionEnabled:YES];
+    [self.scrollView addSubview:self.imageView];
     // 1.生产 两种 手势
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewDidTap)];
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewDidDoubleTap:)];
@@ -87,7 +75,7 @@
     [self addGestureRecognizer:doubleTap];
     [self addGestureRecognizer:longPress];
 }
-    
+
 #pragma mark - 单击
 - (void)scrollViewDidTap{
     if(self.tapBlock){
@@ -131,26 +119,29 @@
         return;
     }
     SDWebImageManager *mgr = [SDWebImageManager sharedManager];
-    [[mgr imageCache] queryCacheOperationForKey:[url absoluteString] done:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
-        if (image) { // 如果缓存中有图片, 则直接赋值
-            self.imageView.image = image;
-            [self layoutSubviews];
-        }else{// 缓存中没有图片, 则下载
-            [self.imageView sd_setImageWithURL:url completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    UIImage *imageCache = [[mgr imageCache] imageFromCacheForKey:url.absoluteString];
+    if (imageCache) {
+        self.imageView.image = imageCache;
+        [self layoutSubviews];
+    }else{
+        [self.imageView sd_setImageWithURL:url completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            if (!error) {
                 [self.scrollView setZoomScale:1.f animated:YES];
-                if (image) {
-                    self.imageView.image = image;
-                    [self layoutSubviews];
-                }
-            }];
-        }
-    }];
+                self.imageView.image = image;
+                [self layoutSubviews];
+            }else{
+                self.imageView.image = placeHolder;
+                [self.reloadLabel setHidden:NO];
+            }
+        }];
+    }
 }
     
 - (void)reloadImageIBAction{
     [_reloadLabel setHidden:YES];
     [self sd_ImageWithUrl:self.url placeHolder:self.placeHolder];
 }
+    
     
 - (void)layoutSubviews{
     [super layoutSubviews];

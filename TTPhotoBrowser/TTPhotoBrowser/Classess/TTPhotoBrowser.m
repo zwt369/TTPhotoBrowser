@@ -2,21 +2,26 @@
 //  TTPhotoBrowser.m
 //  TTPhotoBrowser
 //
-//  Created by 壹号美 on 2018/9/30.
+
 //  Copyright © 2018年 TTPhotoBrowser. All rights reserved.
 //
 
 #import "TTPhotoBrowser.h"
 #import "TTPhotoCollectionViewCell.h"
 
-@interface TTPhotoBrowser()<UICollectionViewDataSource,UICollectionViewDelegate>{
-    UICollectionView      *_collectionView;
-    UIPageControl         *_pageControl;// UIPageControl
-    BOOL                   _isFirstShow;// 是否是第一次 展示
-    CGFloat                _contentOffsetX; // 偏移量
-    NSInteger              _page; // 页数
-    NSArray               *_tempArr; // 给 '绝对数据源'
-}
+@interface TTPhotoBrowser()<UICollectionViewDataSource,UICollectionViewDelegate>
+
+@property (nonatomic, strong)UICollectionView *collectionView;
+    
+@property (nonatomic, assign)BOOL isFirstShow;
+    
+@property (nonatomic, assign)CGFloat contentOffsetX;
+    
+@property (nonatomic, assign)NSInteger page;
+    
+@property (nonatomic, strong)NSArray *tempArr;
+    
+@property (nonatomic, strong)UIPageControl *pageControl;
     
 @end
 
@@ -58,38 +63,38 @@ static NSString *ID = @"KNCollectionView";
     [collectionView setShowsVerticalScrollIndicator:NO];
     [collectionView setDecelerationRate:0];
     [collectionView registerClass:[TTPhotoCollectionViewCell class] forCellWithReuseIdentifier:ID];
-    _collectionView = collectionView;
+    self.collectionView = collectionView;
     [self addSubview:collectionView];
 }
 
 #pragma mark - 初始化 UIPageControl
 - (void)initializePageControl{
     UIPageControl *pageControl = [[UIPageControl alloc] init];
-    [pageControl setCurrentPage:_currentIndex];
-    [pageControl setNumberOfPages:_itemsArr.count];
+    [pageControl setCurrentPage:self.currentIndex];
+    [pageControl setNumberOfPages:_itemsArray.count];
     [pageControl setFrame:(CGRect){{0,ScreenHeight - 50},{ScreenWidth,30}}];
     [pageControl setHidden:!_isNeedPageControl];
-    if(_itemsArr.count == 1){
+    if(_itemsArray.count == 1){
         [pageControl setHidden:YES];
     }
-    _pageControl = pageControl;
+    self.pageControl = pageControl;
     [self addSubview:pageControl];
 }
 
 
-#pragma mark - 右上角 按钮的点击
-- (void)operationBtnIBAction{
+#pragma mark - 长按点击事件
+- (void)operationAction{
 //__weak __typeof(self) weakSelf = self;
 //if(_actionSheetArr.count != 0){ // 如果是自定义的 选项
 //    KNActionSheet *actionSheet = [[KNActionSheet alloc] initWithCancelBtnTitle:nil destructiveButtonTitle:nil otherBtnTitlesArr:[weakSelf.actionSheetArr copy] actionBlock:^(NSInteger buttonIndex) {
 //        // 让代理知道 是哪个按钮被点击了
 //        if([weakSelf.delegate respondsToSelector:@selector(photoBrowerRightOperationActionWithIndex:)]){
-//            [weakSelf.delegate photoBrowerRightOperationActionWithIndex:buttonIndex selectedIndex:_currentIndex];
+//            [weakSelf.delegate photoBrowerRightOperationActionWithIndex:buttonIndex selectedIndex:self.currentIndex];
 //        }
 //    }];
 //    [actionSheet show];
 //}else{
-//    UIImageView *imageView = [self tempViewFromSourceViewWithCurrentIndex:_currentIndex];
+//    UIImageView *imageView = [self tempViewFromSourceViewWithCurrentIndex:self.currentIndex];
 //    BOOL contentCRCode = NO;
 //    NSString *featureString;
 //    if (imageView.image != nil) {
@@ -114,7 +119,7 @@ static NSString *ID = @"KNCollectionView";
 //        }
 //        KNActionSheet *actionSheet = [[KNActionSheet alloc] initWithCancelBtnTitle:nil destructiveButtonTitle:@"发送给朋友" otherBtnTitlesArr:countArray actionBlock:^(NSInteger buttonIndex) {
 //            if([weakSelf.delegate respondsToSelector:@selector(photoBrowerRightOperationActionWithIndex:selectedIndex:)]){
-//                [weakSelf.delegate photoBrowerRightOperationActionWithIndex:buttonIndex selectedIndex:_currentIndex];
+//                [weakSelf.delegate photoBrowerRightOperationActionWithIndex:buttonIndex selectedIndex:self.currentIndex];
 //            }
 //            switch (buttonIndex) {
 //                case 0:{ // 删除图片
@@ -129,7 +134,7 @@ static NSString *ID = @"KNCollectionView";
 //                        [[UIApplication sharedApplication].keyWindow showMbProgressHUDMessage:@"无相册访问权限，请先开启权限"];
 //                        return ;
 //                    }
-//                    KNPhotoItems *items = weakSelf.itemsArr[weakSelf.currentIndex];
+//                    KNPhotoItems *items = weakSelf.itemsArray[weakSelf.currentIndex];
 //                    if(items.url){ // 如果是网络图片
 //                        SDWebImageManager *mgr = [SDWebImageManager sharedManager];
 //                        [mgr diskImageExistsForURL:[NSURL URLWithString:items.url] completion:^(BOOL isInCache) {
@@ -143,7 +148,7 @@ static NSString *ID = @"KNCollectionView";
 //                            }
 //                        }];
 //                    }else{ // 如果是本地图片
-//                        UIImageView *imageView = [self tempViewFromSourceViewWithCurrentIndex:_currentIndex];
+//                        UIImageView *imageView = [self tempViewFromSourceViewWithCurrentIndex:self.currentIndex];
 //                        dispatch_async(dispatch_get_main_queue(), ^{
 //                            UIImageWriteToSavedPhotosAlbum(imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 //                        });
@@ -173,7 +178,7 @@ static NSString *ID = @"KNCollectionView";
 //
 //        KNActionSheet *actionSheet = [[KNActionSheet alloc] initWithCancelBtnTitle:nil destructiveButtonTitle:@"保存图片" otherBtnTitlesArr:nil actionBlock:^(NSInteger buttonIndex) {
 //            if([weakSelf.delegate respondsToSelector:@selector(photoBrowerRightOperationActionWithIndex:selectedIndex:)]){
-//                [weakSelf.delegate photoBrowerRightOperationActionWithIndex:buttonIndex selectedIndex:_currentIndex];
+//                [weakSelf.delegate photoBrowerRightOperationActionWithIndex:buttonIndex selectedIndex:self.currentIndex];
 //            }
 //
 //            switch (buttonIndex) {
@@ -186,7 +191,7 @@ static NSString *ID = @"KNCollectionView";
 //                        [[UIApplication sharedApplication].keyWindow showMbProgressHUDMessage:@"无相册访问权限，请先开启权限"];
 //                        return ;
 //                    }
-//                    KNPhotoItems *items = weakSelf.itemsArr[weakSelf.currentIndex];
+//                    KNPhotoItems *items = weakSelf.itemsArray[weakSelf.currentIndex];
 //                    if(items.url){ // 如果是网络图片
 //                        SDWebImageManager *mgr = [SDWebImageManager sharedManager];
 //                        [mgr diskImageExistsForURL:[NSURL URLWithString:items.url] completion:^(BOOL isInCache) {
@@ -200,7 +205,7 @@ static NSString *ID = @"KNCollectionView";
 //                            }
 //                        }];
 //                    }else{ // 如果是本地图片
-//                        UIImageView *imageView = [self tempViewFromSourceViewWithCurrentIndex:_currentIndex];
+//                        UIImageView *imageView = [self tempViewFromSourceViewWithCurrentIndex:self.currentIndex];
 //                        dispatch_async(dispatch_get_main_queue(), ^{
 //                            UIImageWriteToSavedPhotosAlbum(imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 //                        });
@@ -228,7 +233,7 @@ static NSString *ID = @"KNCollectionView";
 //        //        KNActionSheet *actionSheet = [[KNActionSheet alloc] initWithCancelBtnTitle:nil destructiveButtonTitle:@"发送给朋友" otherBtnTitlesArr:@[@"保存图片"] actionBlock:^(NSInteger buttonIndex) {
 //        // 让代理知道 是哪个按钮被点击了
 //        if([weakSelf.delegate respondsToSelector:@selector(photoBrowerRightOperationActionWithIndex:selectedIndex:)]){
-//            [weakSelf.delegate photoBrowerRightOperationActionWithIndex:buttonIndex selectedIndex:_currentIndex];
+//            [weakSelf.delegate photoBrowerRightOperationActionWithIndex:buttonIndex selectedIndex:self.currentIndex];
 //        }
 //
 //        switch (buttonIndex) {
@@ -239,8 +244,8 @@ static NSString *ID = @"KNCollectionView";
 //                //                        [weakSelf.delegate photoBrowerRightOperationDeleteImageSuccessWithRelativeIndex:weakSelf.currentIndex];
 //                //                    }
 //                //
-//                //                    KNPhotoItems *items = _itemsArr[_currentIndex];
-//                //                    NSInteger index = [_tempArr indexOfObject:items];
+//                //                    KNPhotoItems *items = _itemsArray[self.currentIndex];
+//                //                    NSInteger index = [tempArr indexOfObject:items];
 //                //                    // 1: 删除后 回调返回 绝对 下标
 //                //                    if([weakSelf.delegate respondsToSelector:@selector(photoBrowerRightOperationDeleteImageSuccessWithAbsoluteIndex:)]){
 //                //                        [weakSelf.delegate photoBrowerRightOperationDeleteImageSuccessWithAbsoluteIndex:index];
@@ -258,7 +263,7 @@ static NSString *ID = @"KNCollectionView";
 //                    [[UIApplication sharedApplication].keyWindow showMbProgressHUDMessage:@"无相册访问权限，请先开启权限"];
 //                    return ;
 //                }
-//                KNPhotoItems *items = weakSelf.itemsArr[weakSelf.currentIndex];
+//                KNPhotoItems *items = weakSelf.itemsArray[weakSelf.currentIndex];
 //                if(items.url){ // 如果是网络图片
 //                    SDWebImageManager *mgr = [SDWebImageManager sharedManager];
 //                    [mgr diskImageExistsForURL:[NSURL URLWithString:items.url] completion:^(BOOL isInCache) {
@@ -272,7 +277,7 @@ static NSString *ID = @"KNCollectionView";
 //                        }
 //                    }];
 //                }else{ // 如果是本地图片
-//                    UIImageView *imageView = [self tempViewFromSourceViewWithCurrentIndex:_currentIndex];
+//                    UIImageView *imageView = [self tempViewFromSourceViewWithCurrentIndex:self.currentIndex];
 //                    dispatch_async(dispatch_get_main_queue(), ^{
 //                        UIImageWriteToSavedPhotosAlbum(imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 //                    });
@@ -305,20 +310,17 @@ static NSString *ID = @"KNCollectionView";
     }else{
 //        [[KNToast shareToast] initWithText:PhotoSaveImageFailureMessage duration:PhotoSaveImageMessageTime];
     }
-    if([self.delegate respondsToSelector:@selector(photoBrowerWriteToSavedPhotosAlbumStatus:)]){
-        [self.delegate photoBrowerWriteToSavedPhotosAlbumStatus:error?NO:YES];
-    }
 }
 
 #pragma mark - UICollectionViewDataSource & UICollectionViewDelegate
     
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return _itemsArr.count;
+    return _itemsArray.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     __weak __typeof(self) weakSelf = self;
     TTPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
-    TTPhotoItem *items = _itemsArr[indexPath.row];
+    TTPhotoItem *items = _itemsArray[indexPath.row];
     NSString *url = items.url;
     [cell sd_ImageWithUrl:url placeHolder:items.placeIamge];
     cell.tapBlock = ^(){
@@ -326,7 +328,7 @@ static NSString *ID = @"KNCollectionView";
     };
     cell.longPressBlock = ^(){
         if (weakSelf.openLongPress) {
-            [weakSelf operationBtnIBAction];
+            [weakSelf operationAction];
         }
     };
     cell.backgroundColor = [UIColor clearColor];
@@ -334,15 +336,14 @@ static NSString *ID = @"KNCollectionView";
 }
     
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    _currentIndex = scrollView.contentOffset.x / (ScreenWidth + 20);
+    self.currentIndex = scrollView.contentOffset.x / (ScreenWidth + 20);
     CGFloat scrollViewW = scrollView.frame.size.width;
     CGFloat x = scrollView.contentOffset.x;
-    NSInteger page = (x + scrollViewW / 2) / scrollViewW;
-
-    if(_page != page){
-        _page = page;
-        if(_page + 1 <= _itemsArr.count){
-            [_pageControl setCurrentPage:_page];
+    NSInteger currentPage = (x + scrollViewW / 2) / scrollViewW;
+    if(self.page != currentPage){
+        self.page = currentPage;
+        if(self.page + 1 <= _itemsArray.count){
+            [self.pageControl setCurrentPage:self.page];
         }
     }
 }
@@ -355,80 +356,74 @@ static NSString *ID = @"KNCollectionView";
 
 #pragma mark - 展现
 - (void)present{
-    if([self imageArrayIsEmpty:_itemsArr]){
+    if([self imageArrayIsEmpty:_itemsArray]){
         return;
     }
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    if (!self.operationArray) {
+        self.openLongPress = NO;
+    }
     if(![self imageArrayIsEmpty:_dataSourceUrlArr]){
-        NSArray *arr = [_dataSourceUrlArr subarrayWithRange:NSMakeRange(_itemsArr.count, _dataSourceUrlArr.count -_itemsArr.count)];
-        NSMutableArray *Arrs = [NSMutableArray arrayWithArray:_itemsArr];
+        NSArray *arr = [_dataSourceUrlArr subarrayWithRange:NSMakeRange(_itemsArray.count, _dataSourceUrlArr.count -_itemsArray.count)];
+        NSMutableArray *Arrs = [NSMutableArray arrayWithArray:_itemsArray];
         [Arrs addObjectsFromArray:arr];
-        _itemsArr = [Arrs copy];
+        _itemsArray = [Arrs copy];
     }
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     [self setFrame:window.bounds];
     [window addSubview:self];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 #pragma mark - 展现没有动画
 - (void)presentWithoutAnimation{
-    if([self imageArrayIsEmpty:_itemsArr]){
+    if([self imageArrayIsEmpty:_itemsArray]){
         return;
     }
-    _isFirstShow = YES;
+    self.isFirstShow = YES;
     if(![self imageArrayIsEmpty:_dataSourceUrlArr]){
-        NSArray *arr = [_dataSourceUrlArr subarrayWithRange:NSMakeRange(_itemsArr.count, _dataSourceUrlArr.count -_itemsArr.count)];
-        NSMutableArray *Arrs = [NSMutableArray arrayWithArray:_itemsArr];
+        NSArray *arr = [_dataSourceUrlArr subarrayWithRange:NSMakeRange(_itemsArray.count, _dataSourceUrlArr.count -_itemsArray.count)];
+        NSMutableArray *Arrs = [NSMutableArray arrayWithArray:_itemsArray];
         [Arrs addObjectsFromArray:arr];
-        _itemsArr = [Arrs copy];
+        _itemsArray = [Arrs copy];
     }
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     [self setFrame:window.bounds];
     [window addSubview:self];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 #pragma mark - 消失
 - (void)dismiss{
-    if([self.delegate respondsToSelector:@selector(photoBrowerWillDismiss)]){
-        [self.delegate photoBrowerWillDismiss];
-    }
-    [[UIApplication sharedApplication]setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
     UIImageView *tempView = [[UIImageView alloc] init];
-    //SDWebImageManager *mgr = [SDWebImageManager sharedManager];
-    //KNPhotoItems *items = _itemsArr[_currentIndex];
-    //[mgr diskImageExistsForURL:[NSURL URLWithString:items.url] completion:^(BOOL isInCache) {
-    //    if (isInCache) {
-    //        if([[[[items.url lastPathComponent] pathExtension] lowercaseString] isEqualToString:@"gif"]){ // gif 图片
-    //            NSData *data = UIImageJPEGRepresentation([[mgr imageCache] imageFromDiskCacheForKey:items.url], 1.f);
-    //            tempView.image = [self imageFromGifFirstImage:data]; // 获取图片的第一帧
-    //        }else{ // 普通图片
-    //            tempView.image = [[mgr imageCache] imageFromDiskCacheForKey:items.url];
-    //        }
-    //    }else{
-    //        UIImage *image = [[self tempViewFromSourceViewWithCurrentIndex:_currentIndex] image];
-    //        if(image){
-    //            [tempView setImage:image];
-    //        }else{
-    //            [tempView setImage:items.sourceImage];
-    //        }
-    //    }
-    //}];
-    //if(!tempView.image){
-    //    tempView.image = items.placeIamge;
-    //}
-
-    [_collectionView setHidden:YES];
-    [_pageControl    setHidden:YES];
-//    [_numView        setHidden:YES];
-    _tempArr = nil;
-    _itemsArr = nil;
+    SDWebImageManager *mgr = [SDWebImageManager sharedManager];
+    TTPhotoItem *items = _itemsArray[self.currentIndex];
+    [mgr diskImageExistsForURL:[NSURL URLWithString:items.url] completion:^(BOOL isInCache) {
+        if (isInCache) {
+            if ([items.url hasSuffix:@".gif"]) {
+                NSData *data = UIImageJPEGRepresentation([[mgr imageCache] imageFromDiskCacheForKey:items.url], 1.f);
+                tempView.image = [self imageFromGifFirstImage:data]; // 获取图片的第一帧
+            }else{
+                tempView.image = [[mgr imageCache] imageFromDiskCacheForKey:items.url];
+            }
+        }else{
+            UIImage *image = [[self tempViewFromSourceViewWithCurrentIndex:self.currentIndex] image];
+            if(image){
+                [tempView setImage:image];
+            }else{
+                [tempView setImage:items.sourceImage];
+            }
+        }
+    }];
+    if(!tempView.image){
+        tempView.image = items.placeIamge;
+    }
+    [self.collectionView setHidden:YES];
+    [self.pageControl    setHidden:YES];
+    self.tempArr = nil;
     UIView *sourceView;
     if([_sourceViewForCellReusable isKindOfClass:[UICollectionView class]]){
         sourceView = [(UICollectionView *)_sourceViewForCellReusable cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
     }else{
-//        sourceView = items.sourceView;
+        sourceView = items.sourceView;
     }
     CGRect rect = [sourceView convertRect:[sourceView bounds] toView:self];
     if(rect.origin.y > ScreenHeight ||
@@ -450,7 +445,6 @@ static NSString *ID = @"KNCollectionView";
         [tempView setBounds:(CGRect){CGPointZero,{tempRectSize.width,tempRectSize.height}}];
         [tempView setCenter:[self center]];
         [self addSubview:tempView];
-    
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [tempView setFrame:rect];
             [self setBackgroundColor:[UIColor clearColor]];
@@ -463,54 +457,40 @@ static NSString *ID = @"KNCollectionView";
 #pragma mark - 展现的时候 动画
 - (void)photoBrowerWillShowWithAnimated{
     // 0.初始化绝对数据源
-    _tempArr = [NSArray arrayWithArray:_itemsArr];
-
+    self.tempArr = [NSArray arrayWithArray:_itemsArray];
     // 1.判断用户 点击了的控件是 控制器中的第几个图片. 在这里设置 collectionView的偏移量
-    [_collectionView setContentOffset:(CGPoint){_currentIndex * (self.frame.size.width + 20),0} animated:NO];
-    _contentOffsetX = _collectionView.contentOffset.x;
-
+    [self.collectionView setContentOffset:(CGPoint){self.currentIndex * (self.frame.size.width + 20),0} animated:NO];
+    self.contentOffsetX = self.collectionView.contentOffset.x;
     // 2. 可能考虑到 self.sourceView上面放着的是: 'button' ,所以这里用 UIView去接收
-    TTPhotoItem *items = _itemsArr[_currentIndex];
+    TTPhotoItem *items = _itemsArray[self.currentIndex];
     // 将 sourView的frame 转到 self上, 获取到 frame
-
     UIView *sourceView;
     if([_sourceViewForCellReusable isKindOfClass:[UICollectionView class]]){
         sourceView = [(UICollectionView *)_sourceViewForCellReusable cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.currentIndex inSection:0]];
     }else{
         sourceView = items.sourceView;
     }
-
     CGRect rect = [sourceView convertRect:[sourceView bounds] toView:self];
-
-    UIImageView *tempView = [self tempViewFromSourceViewWithCurrentIndex:_currentIndex];
-
+    UIImageView *tempView = [self tempViewFromSourceViewWithCurrentIndex:self.currentIndex];
     [tempView setFrame:rect];
     [tempView setCenter:[self center]];
     [tempView setContentMode:sourceView.contentMode];
     [self addSubview:tempView];
-
     CGSize tempRectSize;
-
     CGFloat width = tempView.image.size.width;
     CGFloat height = tempView.image.size.height;
-
     tempRectSize = (CGSize){ScreenWidth,(height * ScreenWidth / width) > ScreenHeight ? ScreenHeight:(height * ScreenWidth / width)};
-
-    [_collectionView setHidden:YES];
-
-    if (_isFirstShow) {
-        //        [tempView setCenter:[self center]];
-        //        [tempView setBounds:(CGRect){CGPointZero,tempRectSize}];
-        //        [tempView removeFromSuperview];
-        [_collectionView setHidden:NO];
+    [self.collectionView setHidden:YES];
+    if (self.isFirstShow) {
+        [self.collectionView setHidden:NO];
     }else{
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [tempView setCenter:[self center]];
             [tempView setBounds:(CGRect){CGPointZero,tempRectSize}];
         } completion:^(BOOL finished) {
-            _isFirstShow = YES;
+            self.isFirstShow = YES;
             [tempView removeFromSuperview];
-            [_collectionView setHidden:NO];
+            [self.collectionView setHidden:NO];
         }];
     }
 }
@@ -536,7 +516,7 @@ static NSString *ID = @"KNCollectionView";
 - (UIImageView *)tempViewFromSourceViewWithCurrentIndex:(NSInteger)currentIndex{
     // 生成临时的一个 imageView 去做 动画
     UIImageView *tempView = [[UIImageView alloc] init];
-    TTPhotoItem *items = _itemsArr[currentIndex];
+    TTPhotoItem *items = _itemsArray[currentIndex];
     if([items.sourceView isKindOfClass:[UIImageView class]]){
         UIImageView *imgV = (UIImageView *)items.sourceView;
         [tempView setImage:[imgV image]];
@@ -554,7 +534,7 @@ static NSString *ID = @"KNCollectionView";
             UICollectionViewCell *cell = [(UICollectionView *)_sourceViewForCellReusable cellForItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
             tempView.image = [(UIImageView *)cell.contentView.subviews[0] image];
         }
-        
+
         if(!tempView.image){
             if(items.sourceImage && !items.url){
                 tempView.image = items.sourceImage;

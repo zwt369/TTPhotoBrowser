@@ -2,28 +2,12 @@
 //  TTPhotoBrowser.h
 //  TTPhotoBrowser
 //
-//  Created by 壹号美 on 2018/9/30.
+
 //  Copyright © 2018年 TTPhotoBrowser. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "TTPhotoItem.h"
-
-@protocol TTPhotoBrowerDelegate <NSObject>
-    
-@optional
-/* PhotoBrower 即将消失 */
-- (void)photoBrowerWillDismiss;
-/* PhotoBrower 保存图片是否成功 */
-- (void)photoBrowerWriteToSavedPhotosAlbumStatus:(BOOL)success;
-/* PhotoBrower 删除图片成功后返回-- > 相对 Index */
-- (void)photoBrowerRightOperationDeleteImageSuccessWithRelativeIndex:(NSInteger)index;
-/* PhotoBrower 删除图片成功后返回-- > 绝对 Index */
-- (void)photoBrowerRightOperationDeleteImageSuccessWithAbsoluteIndex:(NSInteger)index;
-/* 二维码扫描结果 */
-- (void)qrCordScanResult:(NSString *)result;
-    
-@end
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,10 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**当前图片的下标*/
 @property (nonatomic, assign) NSInteger currentIndex;
-/**是否打开长按功能*/
-@property (nonatomic, assign) BOOL openLongPress;
 /**存放图片的模型 :url && UIView*/
-@property (nonatomic, strong) NSArray *itemsArr;
+@property (nonatomic, strong) NSArray *itemsArray;
 /**存放 ActionSheet 弹出框的内容 :NSString类型*/
 @property (nonatomic, strong) NSMutableArray *actionSheetArr;
 /**是否需要 底部 UIPageControl, Default is YES*/
@@ -49,12 +31,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong) NSArray *dataSourceUrlArr;
 
-@property (nonatomic, weak ) id<TTPhotoBrowerDelegate> delegate;
-
 - (void)present;
 
 - (void)dismiss;
 
+/**是否打开长按功能*/
+@property (nonatomic, assign) BOOL openLongPress;
+/**长按操作*/
+@property(nonatomic,strong)NSArray *operationArray;
+    
 @end
 
 NS_ASSUME_NONNULL_END

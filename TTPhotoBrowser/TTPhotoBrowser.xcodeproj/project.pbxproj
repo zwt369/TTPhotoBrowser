@@ -20,6 +20,7 @@
 		BC97914A21606CE5001A79E3 /* TTPhotoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97914921606CE5001A79E3 /* TTPhotoItem.m */; };
 		BC97914D21606DD6001A79E3 /* TTPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97914C21606DD6001A79E3 /* TTPhotoBrowser.m */; };
 		BC97915021606DEC001A79E3 /* TTPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC97914F21606DEC001A79E3 /* TTPhotoImageView.m */; };
+		BC9791542160B024001A79E3 /* TTPhotoBrower.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BC9791532160B024001A79E3 /* TTPhotoBrower.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		BC97914C21606DD6001A79E3 /* TTPhotoBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTPhotoBrowser.m; sourceTree = "<group>"; };
 		BC97914E21606DEC001A79E3 /* TTPhotoImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTPhotoImageView.h; sourceTree = "<group>"; };
 		BC97914F21606DEC001A79E3 /* TTPhotoImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTPhotoImageView.m; sourceTree = "<group>"; };
+		BC9791532160B024001A79E3 /* TTPhotoBrower.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TTPhotoBrower.bundle; sourceTree = "<group>"; };
 		CFDCAADA854B17AE12E95213 /* libPods-TTPhotoBrowser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TTPhotoBrowser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -180,6 +182,7 @@
 				BC97914921606CE5001A79E3 /* TTPhotoItem.m */,
 				BC97914B21606DD6001A79E3 /* TTPhotoBrowser.h */,
 				BC97914C21606DD6001A79E3 /* TTPhotoBrowser.m */,
+				BC9791532160B024001A79E3 /* TTPhotoBrower.bundle */,
 			);
 			path = Classess;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC9791542160B024001A79E3 /* TTPhotoBrower.bundle in Resources */,
 				BC9790FD216067A2001A79E3 /* LaunchScreen.storyboard in Resources */,
 				BC9790FA216067A2001A79E3 /* Assets.xcassets in Resources */,
 				BC9790F8216067A1001A79E3 /* Main.storyboard in Resources */,

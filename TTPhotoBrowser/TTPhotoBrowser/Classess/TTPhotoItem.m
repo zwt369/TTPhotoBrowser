@@ -2,7 +2,7 @@
 //  TTPhotoItem.m
 //  TTPhotoBrowser
 //
-//  Created by 壹号美 on 2018/9/30.
+
 //  Copyright © 2018年 TTPhotoBrowser. All rights reserved.
 //
 
@@ -16,7 +16,7 @@
         if ([[mgr imageCache] imageFromDiskCacheForKey:self.placeIamgeUrl] != nil) {
             _placeIamge = [[mgr imageCache] imageFromDiskCacheForKey:self.placeIamgeUrl];
         }else{
-            _placeIamge = [UIImage imageNamed:@"KNPhotoBrower.bundle/defaultPlaceHolder"];
+            _placeIamge = [UIImage imageNamed:@"TTPhotoBrower.bundle/defaultPlaceHolder"];
         }
     }
     return _placeIamge;
