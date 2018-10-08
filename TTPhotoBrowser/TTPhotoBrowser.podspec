@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "TTPhotoBrowser"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "一款仿微信的轻量级图片浏览器"
 
   s.description  = <<-DESC
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   s.author             = { "Tony" => "369388828@qq.com" }
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/zwt369/TTPhotoBrowser.git", :tag => "0.0.2" }
+  s.source       = { :git => "https://github.com/zwt369/TTPhotoBrowser.git", :tag => "0.0.3" }
 
   s.source_files  = "TTPhotoBrowser/TTPhotoBrowser/Classess/**/**/*.{h,m}"
  # s.source_files = 'YYText/**/*.{h,m}'
