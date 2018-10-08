@@ -7,8 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "TTPhotoBrowser.h"
+#import "TTPhoto.h"
 #import <UIImageView+WebCache.h>
+
 
 @interface ViewController ()
 

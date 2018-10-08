@@ -8,6 +8,7 @@
 
 #import "TTPhotoBrowser.h"
 #import "TTPhotoCollectionViewCell.h"
+ #import "TTPhotoItem.h"
 
 @interface TTPhotoBrowser()<UICollectionViewDataSource,UICollectionViewDelegate>
 

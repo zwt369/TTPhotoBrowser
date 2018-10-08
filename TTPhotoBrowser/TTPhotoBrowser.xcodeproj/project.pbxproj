@@ -43,6 +43,7 @@
 /* Begin PBXFileReference section */
 		02CC7CF5197594E0BE018E2A /* Pods-TTPhotoBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TTPhotoBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-TTPhotoBrowser/Pods-TTPhotoBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		86B23BF321919A1667B491FD /* Pods-TTPhotoBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TTPhotoBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TTPhotoBrowser/Pods-TTPhotoBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		BC51308F216AF62A00763B21 /* TTPhoto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTPhoto.h; sourceTree = "<group>"; };
 		BC9790ED216067A1001A79E3 /* TTPhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TTPhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC9790F0216067A1001A79E3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BC9790F1216067A1001A79E3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -174,6 +175,7 @@
 		BC979122216067BE001A79E3 /* Classess */ = {
 			isa = PBXGroup;
 			children = (
+				BC51308F216AF62A00763B21 /* TTPhoto.h */,
 				BC97914221606936001A79E3 /* TTPhotoCollectionViewCell.h */,
 				BC97914321606936001A79E3 /* TTPhotoCollectionViewCell.m */,
 				BC97914E21606DEC001A79E3 /* TTPhotoImageView.h */,

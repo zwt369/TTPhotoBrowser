@@ -59,18 +59,14 @@
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     [self.imageView setUserInteractionEnabled:YES];
     [self.scrollView addSubview:self.imageView];
-    // 1.生产 两种 手势
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewDidTap)];
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewDidDoubleTap:)];
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressDidPress:)];
-    // 2.设置 手势的要求
     [tap setNumberOfTapsRequired:1];
     [tap setNumberOfTouchesRequired:1];
     [doubleTap setNumberOfTapsRequired:2];
     [doubleTap setNumberOfTouchesRequired:1];
-    // 3.避免两种手势冲突
     [tap requireGestureRecognizerToFail:doubleTap];
-    // 4.添加 手势
     [self addGestureRecognizer:tap];
     [self addGestureRecognizer:doubleTap];
     [self addGestureRecognizer:longPress];
@@ -82,7 +78,8 @@
         self.tapBlock();
     }
 }
-    
+
+#pragma mark - 长按
 - (void)longPressDidPress:(UILongPressGestureRecognizer *)longPress{
     if(longPress.state == UIGestureRecognizerStateBegan){
         if(self.longPressBlock){
@@ -90,7 +87,7 @@
         }
     }
 }
-    
+
 #pragma mark - 双击
 - (void)scrollViewDidDoubleTap:(UITapGestureRecognizer *)doubleTap{
     // 这里先判断图片是否下载好,, 如果没下载好, 直接return

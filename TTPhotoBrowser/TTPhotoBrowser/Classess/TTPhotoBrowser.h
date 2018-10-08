@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TTPhotoItem.h"
+
 
 
 NS_ASSUME_NONNULL_BEGIN
