@@ -15,6 +15,8 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/zwt369/TTPhotoBrowser.git", :tag => "0.0.1" }
 
   s.source_files  = "TTPhotoBrowser/TTPhotoBrowser/Classess/**/**/*.{h,m}"
+ # s.source_files = 'YYText/**/*.{h,m}'
+  s.public_header_files = 'TTPhotoBrowser/TTPhotoBrowser/Classess/**/*.{h}'
  # s.exclude_files = "Classes/Exclude"
  # s.public_header_files = "Classes/**/*.h"
 
